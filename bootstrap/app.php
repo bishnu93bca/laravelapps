@@ -3,6 +3,10 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+//use App\Http\Middleware\Auth;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\RoleMiddleware;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,6 +16,20 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        // Global Middleware
+        //$middleware->append(IsAdmin::class);
+
+
+        // Group Middleware
+        // $middleware->appendToGroup('role:admin',
+        //         [IsAdmin::class]
+        // );
+
+        $middleware->appendToGroup('role',
+                [RoleMiddleware::class]
+        );
+
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
